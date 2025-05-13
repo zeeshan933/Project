@@ -1,0 +1,689 @@
+{% extends 'sidebar.html'%}
+{% block title %}tags{% endblock %} - AnalVisual
+{% block header %}
+  {{ js_resources|safe }}
+  {{ css_resources|safe }}
+  {{ script|safe }}
+  {{ script1|safe }}
+  {{ script2|safe }}
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='tags.css')}}">
+  {% endblock %}
+  {% block content %}
+  
+  <h2 style="margin-left: 20px; margin-top: 5px;">Columns</h2>
+  <div class="container" >
+    <div class="tag_container none_scroll">
+      {% for column in columns %}
+      <div class="tag" data-tag ="{{column}}">{{ column }}</div>
+      {% endfor %}
+    </div>
+    
+    <div class="container_item1">
+    <h3>Rows:</h3>
+    <div id="dropArea2" class="drop-area none_scroll"></div>
+    </div>
+    <div class="container_item2">
+    <h3>Columns:</h3>
+    <div id="dropArea1" class="drop-area none_scroll"></div>
+    </div>
+    <div class="container_item3">
+      <input type="checkbox" id="createDropArea3" class="checkbox">
+      <h3 style="display: inline;">Height:</h3>
+      <div id="dropArea3" class="drop-area hidden_drop_area none_scroll" ></div>
+    </div>
+  </div>
+  <!--
+    Start style
+  -->
+  <form action="/columns" method="post">
+    <div class="container-design select_allow">
+      <div class="column">
+        <div class="column-title">Legend Design Parameters</div>
+          <label for="position_label">position</label><!--legend = plt.legend(loc='center left')-->
+          <select name="position_label" id="position_label">
+              <option value="upper right">none</option>
+              <option value="upper right">upper right</option>
+              <option value="upper left">upper left</option>
+              <option value="lower left">lower left</option>
+              <option value="lower right">lower right</option>
+              <option value="center left">center left</option>
+              <option value="center right">center right</option>
+              <option value="lower center">lower center</option>
+              <option value="upper center">upper center</option>
+              <option value="center">center</option>
+          </select>
+          <label for="legend_title">Enter Title of legend: </label>
+          <input type="text" name="Title_of_label" id="legend_title"><!--legend.set_title("zzz", prop={'size': 16, 'weight': 'bold'})    -->
+          <label for="legend_title_size">legend Title size</label>
+          <input type="number" name="legend_title_size" id="legend_title_size">
+          <label for="legend_title_weight">legend title weight</label>
+          <select name="legend_title_weight" id="legend_title_weight">
+              <option value="normal">none</option>
+              <option value="normal">normal</option>
+              <option value="bold">bold</option>
+              <option value="light">light</option>
+              <option value="heavy">heavy</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="400">400</option>
+              <option value="500">500</option>
+              <option value="600">600</option>
+              <option value="700">700</option>
+              <option value="800">800</option>
+              <option value="900">900</option>
+            </select>
+           <br>
+            <span>legend Title color</span>
+          <select name="legend_Title_color" id="legend_Title_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>legend Text color</span>
+          <!--for text in legend.get_texts():
+              #   text.set_color('green')-->
+              <select name="legend_text_color" id="legend_text_color">
+                <option value="">None</option>
+                {% for color_name in color_name %}
+                  <option value="{{ color_name }}">{{ color_name }}</option>
+                {% endfor %}
+              </select>
+              <label for="legend_opacity">Legend opacity</label><!--legend.get_frame().set_alpha(0.19)    -->
+              <input type="number" name="legend_opacity" id="legend_opacity" step="1" max="100" min="0" placeholder="0-100%" oninput="if (value > 100) value = 100; if (value < 0) value = 0;">
+              <!--percentage/100 -->
+              <label for="legend_box_style">Box Style</label><!--legend.get_frame().set_boxstyle("larrow" ,pad = 20)-->
+              <select name="legend_box_style" id="legend_box_style">
+                  <option value="round">round</option>
+                  <option value="round4">round4</option>
+                  <option value="larrow">larrow</option>
+                  <option value="rarrow">rarrow</option>
+                  <option value="darrow">darrow</option>
+              </select>
+              <label for="legend_box_size">Size</label>
+              <input type="number" name="legend_box_size" id="legend_box_size" step="1" max="20" min="0" placeholder="0-20" oninput="if (value > 20) value = 20; if (value < 0) value = 0;"><!--pad-->
+              <span>Face color</span><!--legend.get_frame().set_facecolor('black')-->
+              <select name="face_color_legend" id="face_color_legend">
+                <option value="">None</option>
+                {% for color_name in color_name %}
+                  <option value="{{ color_name }}">{{ color_name }}</option>
+                {% endfor %}
+              </select>
+              
+              <span>Edge color</span><!--legend.get_frame().set_edgecolor('black')   # Set the edge color of the legend    -->
+              <select name="edge_color_legend" id="edge_color_legend">
+                <option value="">None</option>
+                {% for color_name in color_name %}
+                  <option value="{{ color_name }}">{{ color_name }}</option>
+                {% endfor %}
+              </select>
+              <label for="legend_line_style">Edge style</label><!--legend.get_frame().set_linestyle('-')-->
+              <select name="legend_line_style" id="legend_line_style">
+                  <option value="solid">solid</option>
+                  <option value="dashed">dashed</option>
+                  <option value="dotted">dotted</option>
+                  <option value="dashdot">dashdot</option>
+              </select>
+              <br>
+              <label for="legend_line_width">Line width</label><!--legend.get_frame().set_linewidth(500)-->
+              <input type="number" name="legend_line_width" id="legend_line_width" step="1" max="20" min="0" placeholder="0-20" oninput="if (value > 20) value = 20; if (value < 0) value = 0;">
+      </div>
+  
+      <div class="column">
+        <div class="column-title">Plot Configuration Parameters</div>
+          <span>axis spines color</span>
+          <select name="layout_axis_spines" id="layout_axis_spines">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <!--for spine in ['left', 'bottom', 'right', 'top']:
+          scatterplot.spines[spine].set_color('green')-->
+          <label for="Plot_bg_color">Set Background Color</label>
+          <select name="Plot_bg_color" id="Plot_bg_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+            
+          <label for="layout_theme_style">Set theme Style</label>
+          <select name="layout_theme_style" id="layout_theme_style">
+              <option value="darkgrid">darkgrid</option>
+              <option value="whitegrid">whitegrid</option>
+              <option value="dark">dark</option>
+              <option value="white">white</option>
+              <option value="ticks">ticks</option>
+          </select>
+          <br>
+          <span>Xtick color</span>
+          <select name="layout_xtick_color" id="layout_xtick_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          
+          <span>Ytick color</span>
+          <select name="layout_ytick_color" id="layout_ytick_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <label for="layout_xlabel_title">Xlabel title</label>
+          <input type="text" name="layout_xlabel_title" id="layout_xlabel_title">
+          <span for="layout_xlabel_color">Xlabel color</span>
+          <select name="layout_xlabel_color" id="layout_xlabel_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>Xlabel background color</span>
+          <select name="layout_xlabel_background_color" id="layout_xlabel_background_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>Xlabel border color</span>
+          <select name="layout_xlabel_border_color" id="layout_xlabel_border_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <label for="layout_xlabel_box_style">Xlabel Box Style</label><!--legend.get_frame().set_boxstyle("larrow" ,pad = 20)-->
+          <select name="layout_xlabel_box_style" id="layout_xlabel_box_style">
+              <option value="round">round</option>
+              <option value="round4">round4</option>
+              <option value="larrow">larrow</option>
+              <option value="rarrow">rarrow</option>
+              <option value="darrow">darrow</option>
+          </select>
+          <label for="layout_xlabel_Box_Style_pad">Xlabel Box Style Size</label>
+          <input type="number" name="layout_xlabel_Box_Style_pad" id="layout_xlabel_Box_Style_pad" step="1" max="20" min="0" placeholder="0-20" oninput="if (value > 20) value = 20; if (value < 0) value = 0;"><!--pad-->
+          <label for="layout_ylabel_title">Ylabel title</label>
+          <input type="text" name="layout_ylabel_title" id="layout_ylabel_title">
+          <span>ylabel color</span>
+          <select name="layout_ylabel_color" id="layout_ylabel_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>ylabel background color</span>
+          <select name="layout_ylabel_background_color" id="layout_ylabel_background_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>ylabel border color</span>
+          <select name="layout_ylabel_border_color" id="layout_ylabel_border_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <label for="layout_ylabel_box_style">Ylabel Box Style</label><!--legend.get_frame().set_boxstyle("larrow" ,pad = 20)-->
+          <select name="layout_ylabel_box_style" id="layout_ylabel_box_style">
+              <option value="round">round</option>
+              <option value="round4">round4</option>
+              <option value="larrow">larrow</option>
+              <option value="rarrow">rarrow</option>
+              <option value="darrow">darrow</option>
+          </select>
+          <label for="layout_ylabel_Box_Style_pad">Ylabel Box Style Size</label>
+          <input type="number" name="layout_ylabel_Box_Style_pad" id="layout_ylabel_Box_Style_pad" step="1" max="20" min="0" placeholder="0-20" oninput="if (value > 20) value = 20; if (value < 0) value = 0;"><!--pad-->
+          <label for="layout_plot_title">Plot title</label>
+          <input type="text" name="layout_plot_title" id="layout_plot_title">
+          <span>Title color</span>
+          <select name="layout_title_color" id="layout_title_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>Title background color</span>
+          <select name="layout_title_background_color" id="layout_title_background_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <span>Title border color</span>
+          <select name="layout_title_border_color" id="layout_title_border_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          
+          <label for="layout_title_box_style">Title Box Style</label><!--legend.get_frame().set_boxstyle("larrow" ,pad = 20)-->
+          <select name="layout_title_box_style" id="layout_title_box_style">
+              <option value="round">round</option>
+              <option value="round4">round4</option>
+              <option value="larrow">larrow</option>
+              <option value="rarrow">rarrow</option>
+              <option value="darrow">darrow</option>
+          </select>
+          <label for="layout_title_Box_Style_pad">Title box style size</label>
+          <input type="number" name="layout_title_Box_Style_pad" id="layout_title_Box_Style_pad" step="1" max="20" min="0" placeholder="0-20" oninput="if (value > 20) value = 20; if (value < 0) value = 0;"><!--pad-->    
+      </div>
+  
+      <div class="column">
+        <div class="column-title">Graphic Annotation Parameters</div>
+          <span>Markers color</span>
+          <select name="marker_color" id="marker_color">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+          <label for="marker_size">Marker size</label>
+          <input type="number" name="marker_size" id="marker_size" oninput="if (value > 50) value = 50; if (value < 0) value = 0;">
+          <label for="marker_line_width">Marker Line Width</label>
+          <input type="number" name="marker_line_width" id="marker_line_width" oninput="if (value > 5) value = 5; if (value < 0) value = 0;">
+          <label for="marker_categorization">Categorization</label>
+          <select name="marker_categorization" id="marker_categorization">
+              <option value="">None</option>
+                {%for column in columns%}
+                  <option value="{{column}}">{{column}}</option>
+                {%endfor%}
+          </select><!--hue  ::: apply for loop of column-->
+          <br>
+          <label for="marker_palette">Palette</label>
+          <select name="marker_palette" id="marker_palette">
+              <option value="none">none</option>
+              <option value="terrain">terrain</option>
+              <option value="ocean">ocean</option>
+              <option value="cubehelix">cubehelix</option>
+              <option value="rainbow">rainbow</option>
+              <option value="twilight">twilight</option>
+              <option value="viridis">viridis</option>
+              <option value="plasma">plasma</option>
+              <option value="inferno">inferno</option>
+              <option value="magma">magma</option>
+              <option value="cividis">cividis</option>
+              <option value="Blues">Blues</option>
+              <option value="Greens">Greens</option>
+              <option value="Oranges">Oranges</option>
+              <option value="Reds">Reds</option>
+              <option value="Purples">Purples</option>
+              <option value="Greys">Greys</option>
+              <option value="YlOrBr">YlOrBr (Yellow-Orange-Brown)</option>
+              <option value="YlOrRd">YlOrRd (Yellow-Orange-Red)</option>
+              <option value="OrRd">OrRd (Orange-Red)</option>
+              <option value="PuRd">PuRd (Purple-Red)</option>
+              <option value="RdPu">RdPu (Red-Purple)</option>
+              <option value="BuPu">BuPu (Blue-Purple)</option>
+              <option value="GnBu">GnBu (Green-Blue)</option>
+              <option value="PuBu">PuBu (Purple-Blue)</option>
+              <option value="YlGnBu">YlGnBu (Yellow-Green-Blue)</option>
+              <option value="PuBuGn">PuBuGn (Purple-Blue-Green)</option>
+              <option value="BuGn">BuGn (Blue-Green)</option>
+              <option value="YlGn">YlGn (Yellow-Green)</option>
+              <option value="RdBu">RdBu (Red-Blue)</option>
+              <option value="RdYlBu">RdYlBu (Red-Yellow-Blue)</option>
+              <option value="PuOr">PuOr (Purple-Orange)</option>
+              <option value="BrBG">BrBG (Brown-Blue-Green)</option>
+              <option value="PRGn">PRGn (Purple-Green)</option>
+              <option value="RdGy">RdGy (Red-Gray)</option>
+              <option value="RdYlGn">RdYlGn (Red-Yellow-Green)</option>
+              <option value="PiYG">PiYG (Pink-Yellow-Green)</option>
+              <option value="Spectral">Spectral</option>
+              <option value="coolwarm">coolwarm</option>
+              <option value="seismic">seismic</option>
+              <option value="bwr">bwr (Blue-White-Red)</option>
+          </select>
+          <label for="marker_alpha">marker opacity</label><!--opacity-->
+          <input type="number" name="marker_alpha" id="marker_alpha" step="1" max="100" min="0" placeholder="0-100%" oninput="if (value > 100) value = 100; if (value < 0) value = 0;"><!--%-->
+          <span>Marker edge color</span>
+          <select name="marker_edge_colors" id="marker_edge_colors">
+            <option value="">None</option>
+            {% for color_name in color_name %}
+              <option value="{{ color_name }}">{{ color_name }}</option>
+            {% endfor %}
+          </select>
+      </div>
+    </div>
+    <button type="submit" class="submit">Select</button>
+
+  </form>
+<div class="selected_tags_show top_space_tags">
+  {% if x %}
+<p>X-axis</p>
+  {% for x in x %}
+  <div class="tag" data-tag ="{{x}}">{{ x }}</div>
+  {% endfor %} 
+  {%endif%}
+  {% if y %}
+
+  <p>Y-axis</p>
+  {% for y in y %}
+  <div class="tag" data-tag ="{{y}}">{{ y }}</div>
+  {% endfor %} 
+  {%endif%}
+  {% if z %}
+
+  {% for z in z %}
+  <p>Z-axis</p>
+  <div class="tag" data-tag ="{{z}}">{{ z }}</div>
+  {% endfor %} 
+  {%endif%}
+</div>
+
+<div>{{e}}</div>
+<div class="text-container">
+  <div class="text-option active" onclick="showImage(1)">Simply Plots</div>
+  <div class="text-option" onclick="showImage(2)">Function Plots</div>
+</div>
+
+<div class="plot_display">
+  <div class="plot active">
+    <div class="containerxyz">
+    {%if (image_base1) %}
+      <img src="data:image/png;base64,{{ image_base1 }}" alt="Plot1" id="image1" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image1', '1')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base2) %}
+      <img src="data:image/png;base64,{{ image_base2 }}" alt="Plot2" id="image2" class="plot_class" data-info="base64-image-info">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image2', '2')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base3) %}
+      <img src="data:image/png;base64,{{ image_base3 }}" alt="Plot3" id="image3" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image3', '3')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base4) %}
+      <img src="data:image/png;base64,{{ image_base4 }}" alt="Plot4" id="image4" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image4', '4')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base5) %}
+      <img src="data:image/png;base64,{{ image_base5 }}" alt="Plot5" id="image5" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image5', '5')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base6) %}
+      <img src="data:image/png;base64,{{ image_base6 }}" alt="Plot6" id="image6" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image6', '6')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base7) %}
+      <img src="data:image/png;base64,{{ image_base7 }}" alt="Plot7" id="image7" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image7', '7')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base8) %}
+      <img src="data:image/png;base64,{{ image_base8 }}" alt="Plot8" id="image8" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image8', '8')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base9) %}
+      <img src="data:image/png;base64,{{ image_base9 }}" alt="Plot9" id="image9" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image9', '9')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base10) %}
+      <img src="data:image/png;base64,{{ image_base10 }}" alt="Plot10" id="image10" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image10', '10')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base11) %}
+      <img src="data:image/png;base64,{{ image_base11 }}" alt="Plot11" id="image11" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image11', '11')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base12) %}
+      <img src="data:image/png;base64,{{ image_base12 }}" alt="Plot12" id="image12" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image12', '12')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base13) %}
+      <img src="data:image/png;base64,{{ image_base13 }}" alt="Plot13" id="image13" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image13', '13')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base14) %}
+      <img src="data:image/png;base64,{{ image_base14 }}" alt="Plot14" id="image14" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image14', '14')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base15) %}
+      <img src="data:image/png;base64,{{ image_base15 }}" alt="Plot15" id="image15" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image15', '15')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base16) %}
+      <img src="data:image/png;base64,{{ image_base16 }}" alt="Plot16" id="image16" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image16', '16')">Download</button>
+    {%endif%}
+    </div>
+    <div class="containerxyz">
+    {%if (image_base17) %}
+      <img src="data:image/png;base64,{{ image_base17 }}" alt="Plot17" id="image17" class="plot_class">
+      <button class="download_button custom-btn btn-2" onclick="downloadImage('image17', '17')">Download</button>
+    {%endif%}
+    </div>
+  </div>
+  <div class="plot">
+    <div>{{div|safe}}</div>
+    <div>{{div1|safe}}</div>
+    <div>{{div2|safe}}</div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='tags.js') }}"></script>
+<script>
+  function showImage(imageNumber) {
+    // Hide all images
+    const images = document.querySelectorAll('.plot_display > div');
+    images.forEach(plot => plot.classList.remove('active'));
+
+    // Show the selected image
+    const selectedImage = document.querySelector(`.plot_display > div:nth-child(${imageNumber})`);
+    selectedImage.classList.add('active');
+
+    // Update the active state of the text options
+    const textOptions = document.querySelectorAll('.text-option');
+    textOptions.forEach(option => option.classList.remove('active'));
+    const selectedTextOption = document.querySelector(`.text-option:nth-child(${imageNumber})`);
+    selectedTextOption.classList.add('active');
+  }
+</script>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function sendTagsToServer_x_axis(tags) {
+      $.ajax({
+        type: 'POST', 
+        url: '/x_axis',  // Flask route to handle tag updates
+        contentType: 'application/json',
+        data: JSON.stringify(tags),
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(error) {
+          console.error(error);
+        } 
+      });
+    }
+    function sendTagsToServer_y_axis(tags) {
+      $.ajax({
+        type: 'POST',
+        url: '/y_axis',  // Flask route to handle tag updates
+        contentType: 'application/json',
+        data: JSON.stringify(tags),
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(error) {
+          console.error(error);
+        } 
+      });
+    }
+    function sendTagsToServer_z_axis(tags) {
+      $.ajax({
+        type: 'POST',
+        url: '/z_axis',  // Flask route to handle tag updates
+        contentType: 'application/json',
+        data: JSON.stringify(tags),
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(error) {
+          console.error(error);
+        } 
+      });
+    }
+
+
+    const dropAreas = document.querySelectorAll('.drop-area');
+    const availableTags = document.querySelectorAll('.tag');
+    const createDropArea3Checkbox = document.getElementById('createDropArea3');
+    const dropArea3 = document.getElementById('dropArea3');
+
+    availableTags.forEach(tag => {
+      tag.draggable = true;
+
+      tag.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', tag.getAttribute('data-tag'));
+      });
+    });
+
+    dropAreas.forEach(dropArea => {
+      dropArea.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropArea.classList.add('highlight');
+      });
+
+      dropArea.addEventListener('dragleave', e => {
+        dropArea.classList.remove('highlight');
+      });
+
+      dropArea.addEventListener('drop', e => {
+        e.preventDefault();
+        dropArea.classList.remove('highlight');
+
+        const tagValue = e.dataTransfer.getData('text/plain');
+        const existingTags = dropArea.querySelectorAll('.tag');
+        // Check if the tag is already in the drop area
+        for (const existingTag of existingTags) {
+          if (existingTag.textContent === tagValue) {
+            return; // Return early if the tag is already present
+          }
+        }
+
+        // Check the limit for each drop area
+        const maxTags = dropArea === dropArea1 ? 3 : dropArea === dropArea2 ? 3 : dropArea === dropArea3 ? 1 : 0;
+        if (existingTags.length >= maxTags) {
+          console.log( "the maximum tag limit is reached");
+          return
+        }
+
+        const tagElement = document.createElement('div');
+        tagElement.classList.add('selected_tags', 'tag');
+        tagElement.textContent = tagValue;
+        dropArea.appendChild(tagElement);
+        
+        const updated_x_axis_tags = Array.from(dropArea2.querySelectorAll('.tag')).map(tag => tag.textContent);
+        sendTagsToServer_x_axis(updated_x_axis_tags)
+        const y_axis = Array.from(dropArea1.querySelectorAll('.tag')).map(tag => tag.textContent);
+        sendTagsToServer_y_axis(y_axis)
+        const z_axis = Array.from(dropArea3.querySelectorAll('.tag')).map(tag => tag.textContent);
+        sendTagsToServer_z_axis(z_axis)
+      });
+
+      const clearButton = document.createElement('button');
+      clearButton.classList.add('remove-tag', 'clear-all');
+      clearButton.textContent = 'Clear All';
+      clearButton.addEventListener('click', () => {
+        const tagsInDropArea = dropArea.querySelectorAll('.tag');
+        tagsInDropArea.forEach(tag => {
+          tag.remove();
+        });
+      });
+
+      dropArea.appendChild(clearButton);
+    });
+
+    createDropArea3Checkbox.addEventListener('change', () => {
+      if (createDropArea3Checkbox.checked) {
+        dropArea3.style.display = 'block'; // Show Drop Area 3
+      } else {
+        dropArea3.style.display = 'none'; // Hide Drop Area 3
+        // Clear tags in Drop Area 3
+        const tagsInDropArea3 = dropArea3.querySelectorAll('.tag');
+        tagsInDropArea3.forEach(tag => {
+          tag.remove();
+        });
+      }
+    });
+
+  dropArea1.addEventListener('drop', e => {
+    e.preventDefault();
+    dropArea1.classList.remove('highlight');
+
+    const tagValue = e.dataTransfer.getData('text/plain');
+    const existingTags = dropArea1.querySelectorAll('.tag');
+
+    // Check if the tag is already in the drop area
+    for (const existingTag of existingTags) {
+      if (existingTag.textContent === tagValue) {
+        return; // Return early if the tag is already present
+      }
+    }
+
+    // Check the limit for Drop Area 1
+    if (existingTags.length >= 3) {
+      return; // Maximum tag limit reached
+    }
+
+    const tagElement = document.createElement('div');
+    tagElement.classList.add('selected_tags', 'tag');
+    tagElement.textContent = tagValue;
+    dropArea1.appendChild(tagElement);
+
+    // Automatically send the selected tags to Flask
+    sendTagsToFlask();
+  });
+
+  </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    console.clear();
+    // Your other code here
+  }, 500); // 3000 milliseconds = 3 seconds
+});
+
+
+
+</script>
+  {% endblock %}

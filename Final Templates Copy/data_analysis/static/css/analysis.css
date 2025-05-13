@@ -1,0 +1,124 @@
+    .grid_div{
+        display: grid;
+       grid-template-columns: minmax(auto, 1fr) minmax(auto, 1fr);
+        grid-template-rows: 1fr auto;
+        height: 100vh;
+    }
+    .container_item_1{
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .container_item_2{
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .container_item_3{
+        grid-column: 1;
+        grid-row: 2;
+    }
+    .container_item_4{
+        grid-column: 2;
+        grid-row: 2;
+    }
+    .div_size{
+        /* width: 100%;
+        margin-top: 0;
+        margin-bottom: 0%;
+        height: 390px;*/
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    .set_bottom{
+            bottom: 0;
+            width: 100%;
+    }
+    .error-message {
+        color: red;
+        font-size: 14px;
+        position: relative;
+        display: none;
+        margin-bottom: 0;
+    }
+
+
+    
+    .analysisbtn{
+        font-weight: bolder;
+        font-size: small;
+        width: fit-content;
+    }
+    .con1andcon2{
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+    .formbtn{
+        text-align: center;
+    }
+
+    .shine-animation {
+        animation: shine 2s infinite;
+      }
+  
+      
+
+@media (prefers-color-scheme: light) {
+    @keyframes shine {
+        0% {
+          background: linear-gradient(to bottom right, #3533CD, whitesmoke);
+          box-shadow: 0 0 10px 5px #3533CD;
+        }
+        50% {
+          background: #3533CD;
+          box-shadow: none;
+        }
+        100% {
+          background: linear-gradient(to bottom right, #3533CD, whitesmoke);
+          box-shadow: 0 0 10px 5px #3533CD;
+        }
+      }
+    }
+    @media (prefers-color-scheme: dark){
+        @keyframes shine {
+            0% {
+              background: linear-gradient(to bottom right, #AF8C53, #252926);
+              box-shadow: 0 0 10px 5px #AF8C53;
+            }
+            50% {
+              background: #AF8C53;
+              box-shadow: none;
+            }
+            100% {
+              background: linear-gradient(to bottom right, #AF8C53, #252926);
+              box-shadow: 0 0 10px 5px #AF8C53;
+            }
+          }
+    }
+    
+    @media (max-width: 600px) {
+      .grid_div {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto auto;
+          height: auto;
+      }
+  
+      .container_item_1 {
+          grid-column: 1;
+          grid-row: 1;
+      }
+  
+      .container_item_2 {
+          grid-column: 1;
+          grid-row: 2;
+      }
+  
+      .container_item_3 {
+          grid-column: 1;
+          grid-row: 3;
+      }
+  
+      .container_item_4 {
+          grid-column: 1;
+          grid-row: 4;
+      }
+  }
+  

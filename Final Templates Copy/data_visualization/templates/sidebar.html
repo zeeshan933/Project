@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> {% block title %}{% endblock %} - AnalVisual </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css')}}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.png')}}">
+
+  <!-- Boxiocns CDN Link -->
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+  <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% block header %}{% endblock %}
+</head>
+
+<body>
+  <div class="no_select">
+    <div class="sidebar close">
+      <a href="#">
+      <div class="logo-details">
+        <i class='bx bx-analyse'></i>
+        <span class="logo_name">MZKM Creator</span>
+      </div>
+      </a>
+      <ul class="nav-links">
+      
+
+        <li>
+          <a href="{{url_for('columns') }}">
+            <i class='icon_style bx bx-line-chart'></i>
+            <span class="link_name">Chart</span>
+          </a>
+          <ul class="sub-menu blank">
+            <li><a class="link_name" href="{{url_for('columns') }}">Chart</a></li>
+          </ul>
+        </li>
+
+
+
+        <li>
+          <a href="{{url_for('upload_file') }}">
+            <i class='icon_style bx bx-upload'></i>
+            <span class="link_name">Upload</span>
+          </a>
+          <ul class="sub-menu blank">
+            <li><a class="link_name" href="{{url_for('upload_file') }}">Upload</a></li>
+          </ul>
+        </li>
+        
+        <li>
+          <div class="profile-details">
+            <div class="name-job">
+              <div class="profile_name">Visualization</div>
+              <!--<div class="job">username</div>-->
+            </div>
+         
+          </div>
+        </li>
+      </ul>
+    </div>
+    <section class="home-section">
+      <div class="home-content">
+        {% block content %}{% endblock %}
+
+      </div>
+    </section>
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function () {
+        let sidebar = document.querySelector(".sidebar");
+
+        sidebar.addEventListener("mouseenter", () => {
+          sidebar.classList.remove("close");
+        });
+
+        sidebar.addEventListener("mouseleave", () => {
+          sidebar.classList.add("close");
+        });
+      });
+
+    </script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Contact us</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="icon"  href="pics/logo.png">
+	<script src="contact.js"></script>
+</head>
+<body>
+	<div class="hidediv" >
+	<?php
+
+if (isset($_GET['success']) && $_GET['success'] === 'true') {
+
+    /*echo "<h3 style='text-align: left; background-color: blanchedalmond; color: darkgoldenrod; border: 2px solid darkgoldenrod; padding: 9px; width: 300px; border-radius: 15px; float:right;'>Data submitted successfully</h3>";*/
+    echo "<h3 style='background-color: blanchedalmond; color: darkgoldenrod; border: 2px solid darkgoldenrod; padding: 9px; width: 300px; border-radius: 15px; margin-right: 100px; opacity: 1; animation: hide 1s linear forwards; float:right;'>Data submitted successfully</h3>";
+
+}
+?>
+</div>
+<ul class="breadcrumb">
+	<span>&#x2771;</span>
+  <li><a href="Home.html">Home</a></li>
+  <li>Contact us</li>
+</ul>
+
+	<div class="gcontainer" id="margin">
+		<div class="contactp">
+		<!--	<img src="pics/logo.png" height="200px" width="200px" alt="logo" class="imgmargin">-->
+			<h1><p id="greeting"></p></h1>
+
+<script>
+const time = new Date().getHours();
+const greeting = getGreeting(time);
+document.getElementById("greeting").innerHTML = greeting;
+</script>
+			<p>We are always happy to hear from you! If you have any questions about our houses for rent, please feel free to contact us using the form</p>
+
+		</div>
+
+		<div class="contactp2">
+
+			<form class="conform" action="contactphp.php" method="post">
+				<label>First Name</label>
+				<input type="text" name="first_name" placeholder="First Name" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" autofocus="" required="" onfocusin="changeBackgroundColor(this)" onfocusout="changeBackgroundColor2(this)">
+				<label>Last name</label>
+				<input type="text" name="last_name" placeholder="Last Name" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onfocusin="changeBackgroundColor(this)" onfocusout="changeBackgroundColor2(this)">
+				<label>Email</label>
+				<input type="email" name="email" placeholder="Email" required="" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onfocusin="changeBackgroundColor(this)" onfocusout="changeBackgroundColor2(this)">
+				<label>Phone number</label>
+				<input type="number" maxlength="11" name="pnumber" placeholder="Phone number" onblur="validateNumber(this)"  required="" onfocusin="changeBackgroundColor(this)" onfocusout="changeBackgroundColor2(this)">
+				<input type="submit" name="submit">
+			</form>
+
+		</div>
+	</div>
+
+
+<div class="ccall">
+<div class="ccontainer">
+	
+	<div class="citem1">
+		<h2>Give us a call</h2>
+		<p><span>&#x2706;</span></p>
+		<a href="https://wa.me/(123) 456-7890" target="_blank">(123) 456-7890</a>
+	</div>
+	<div class="citem1">
+		<h2>Send us a Message</h2>
+		<p><span>&#x2709;</span> </p>
+		<a href="mailto:contact@houserent.com">contact@houserent.com</a>
+	</div>
+</div>
+
+<div class="ccenter">
+	<h2>Office</h2>
+	<p><span>&#x2955;</span> </p>
+	<p>123 Anywhere St. Any City, ST 12345</p>
+</div>
+</div>
+<footer>
+	<p>Copyright © 2023 Zeeshan and Tehseen</p>
+</footer>
+</body>
+</html>

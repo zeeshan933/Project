@@ -1,0 +1,222 @@
+.upload_file_here{
+    text-align: center;
+    margin: 3cm auto;
+}
+.upload-btn-wrapper {
+position: relative;
+overflow: hidden;
+display: inline-block;
+right: 0%;
+cursor: pointer;
+
+}
+
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+ }
+ 
+ .tag {
+    width: 25%; /* Each tag takes up 25% of the container's width to make 4 columns */
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    padding: 10px; /* Optional padding */
+ }
+ 
+
+
+
+.btn {
+border: 2px solid;
+padding: 8px 20px;
+border-radius: 8px;
+font-size: 16px;
+text-decoration: underline;
+text-decoration-style: dashed;
+font-style: italic;
+font-weight: bold;
+cursor: pointer;
+width: 350px;
+height: 5cm;
+}
+
+.upload-btn-wrapper input[type=file] {
+font-size: 100px;
+position: absolute;
+left: 0;
+top: 0;
+opacity: 0;
+width: 350px;
+}
+
+.progress-bar {
+width: 100%;
+border-radius: 5px;
+margin-top: 5px;
+height: 10px;
+}
+
+.progress {
+width: 0;
+height: 10px;
+text-align: center;
+line-height: 30px;
+border-radius: 5px;
+
+}
+/*Select tag */
+.select_tag {
+font-weight: bold;
+-webkit-appearance:none;
+-moz-appearance:none;
+-ms-appearance:none;
+appearance:none;
+outline:0;
+box-shadow:none;
+border:0!important;
+flex: 1;
+padding: 0 .5em;
+cursor:pointer;
+font-size: 1em;
+font-family: 'Open Sans', sans-serif;
+
+}
+.select_tag::-ms-expand {
+display: none;
+}
+.select {
+position: relative;
+display: inline-flex;
+width: 10em;
+height: 2em;
+line-height: 3;
+overflow: hidden;
+border-radius: .25em;
+width: 200px;
+}
+.select::after {
+margin-top: -8px;
+content: '\25BC';
+position: absolute;
+top: 0;
+right: 0;
+padding: 0 1em;
+cursor:pointer;
+pointer-events:none;
+transition:.25s all ease;
+}
+
+/*Submit button*/
+.custom-btn {
+margin-left: 25px;
+border-radius: 5px;
+padding: 10px 25px;
+font-size: x-small;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: inline-block;
+box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+7px 7px 20px 0px rgba(0,0,0,.1),
+4px 4px 5px 0px rgba(0,0,0,.1);
+outline: none;
+}
+.btn-2 {
+width: 100px;
+border: none;
+}
+.btn-2:before {
+height: 0%;
+width: 2px;
+}
+.btn-2:hover {
+box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+inset -4px -4px 6px 0 rgba(255,255,255,.2),
+inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+.align_text{
+    display: flex;
+   justify-content: center; /* Horizontal alignment */
+   align-items: center; /* Vertical alignment */
+}
+@media (prefers-color-scheme: dark) {
+    .btn {
+        border-color: #AF8C53;
+        color: #AF8C53;
+        background-color: #252926;
+    }
+    .progress-bar {
+        background-color: #343935;
+    }
+    
+    .progress {
+        background-color: #AF8C53;
+    }
+    .select_tag {
+        background-color: rgba(20, 20, 20, 0.13);
+        color:#AF8C53;
+    }
+    .select {
+        background: #5c6664;
+        }
+        .select::after {
+        background: #2b2e2e;
+        }
+        .select:hover::after {
+        color: #ebb35a;
+        }
+}
+@media (prefers-color-scheme: light) {
+.btn {
+    border-color: #3533CD;
+    color: #3533CD;
+    background-color: rgba(5, 4, 4, 0.336);
+}
+.progress-bar {
+    background-color: #f1f1f1;
+}
+
+.progress {
+    background-color: #3533CD;
+}
+.select_tag {
+    background-color: rgba(212, 212, 212, 0.13);
+    color: #3533CD;
+}
+.select {
+    background: #cdcece;
+    }
+    .select::after {
+    background: #2b2e2e;
+    }
+    .select:hover::after {
+    color: #8684ff;
+    }
+}
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .upload-btn-wrapper {
+        width: 80%; /* Set upload button wrapper width */
+        margin: 0 auto; /* Center the upload button wrapper */
+    }
+
+    .btn {
+        width: 100%; /* Make upload button full width */
+        max-width: 300px; /* Limit the maximum width for better readability */
+    }
+
+    .select {
+        width: 80%; /* Set select dropdown width */
+        margin: 10px auto; /* Center and add space between elements */
+        max-width: 300px; /* Limit the maximum width for better readability */
+    }
+    .align_text {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center elements horizontally */
+    }
+    
+    .selected_tags_show {
+        margin: 10px auto; /* Center and add space between elements */
+    }
+}

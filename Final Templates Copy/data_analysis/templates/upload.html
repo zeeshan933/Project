@@ -1,0 +1,50 @@
+{% extends 'sidebar.html'%}
+{% block title %}upload file{% endblock %} - Data
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tags.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="upload_file_here">
+    <form action="{{url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+        <div class="upload-btn-wrapper container_item0">
+            <button class="btn">Upload a file <div class="progress-bar">
+                <div class="progress"></div></button>
+            <input type="file" name="file" id="fileInput" accept=".xls,.xlsx" />
+          </div>
+        <button type="submit" id="submitButton" style="display: none;">Upload</button>
+    </form>
+    <div>
+    <form action="{{url_for('upload_file') }}" method="post">
+        <div class="select ">
+        <select name="sheet" class="select_tag">
+            <option value="">---Select Sheet---</option>
+            {% for sheet in sheet_names %}
+                <option value="{{sheet}}">{{sheet}}</option>
+            {% endfor %}
+        </select>
+    </div>
+        <input type="hidden" name="excel_file_path" value="{{ excel_file_path }}">
+        <button type="submit" class="custom-btn btn-2">Select</button>
+    </form>
+        </div>
+</div>
+   <h2 class="align_text">Columns</h2>
+   <div class="align_text">
+     <div class="selected_tags_show" style="margin-left: 0px;">
+        {% if columns %}
+           <div class="tag-container">
+              {% for column in columns %}
+              <div class="tag">{{ column }}</div>
+              {% endfor %}
+           </div>
+        {% endif %}
+     </div>
+     
+     
+     
+</div>
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+
+
+{% endblock %}

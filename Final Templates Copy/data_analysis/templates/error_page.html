@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon"  href="{{ url_for('static', filename='images/logo.png')}}">
+    <title>404 - Not Found</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0; /* Background color */
+        }
+
+        .error-icon {
+            font-size: 500px;
+            color: rgba(243, 0, 0, 0.712); /* Set the color to transparent or adjust opacity */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        h1, p {
+            text-align: center;
+            color: #333; /* Text color */
+        }
+        .error-message{
+            z-index: 2;
+            box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5),
+            inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+            background-color: #9797972f;
+            outline: 1px solid rgba(121, 121, 119, 0.247);
+        }
+        .padding-display {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <i class="error-icon" style="color: rgba(36, 36, 1, 0.288);"> &#9888;</i>
+    <div class="error-message" id="errorMessage" style="padding: 200px;">
+        <h1>{{error.code}}</h1>
+        <p>{{error.description}}</p>
+    </div>
+
+    <script>
+        // Function to increase outline
+/*        function increaseOutline() {
+          var div = document.getElementById('errorMessage');
+          var currentOutline = parseInt(window.getComputedStyle(div).outlineWidth);
+          var newOutline = currentOutline + 1; // Increase outline by 10px
+          div.style.outlineWidth = newOutline + 'px';
+      
+          // Check if outline has reached 20px
+          if (newOutline >= 20) {
+            // Redirect to Google.com
+            window.location.href = "{{url_for('index') }}";
+          }
+        }
+      
+        setInterval(increaseOutline, 20); */
+        // Function to increase outline
+var redirectFlag = false;
+function increaseOutline() {
+  var div = document.getElementById('errorMessage');
+  var currentOutline = parseInt(window.getComputedStyle(div).outlineWidth);
+  var newOutline = currentOutline + 1; // Increase outline by 1px
+  div.style.outlineWidth = newOutline + 'px';
+
+  // Check if outline has reached 20px
+  if (newOutline >= 20 && !redirectFlag) {
+    redirectFlag = true;
+    window.location.href = "{{ url_for('index') }}";
+  } else {
+    // Call the function again if outline is less than 20px
+    setTimeout(increaseOutline, 500); // Adjust the delay as needed
+  }
+}
+increaseOutline()
+      </script>
+      
+</body>
+</html>

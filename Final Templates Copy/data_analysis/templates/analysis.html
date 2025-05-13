@@ -1,0 +1,805 @@
+{% extends 'sidebar.html'%}
+{% block title %}Analysis{% endblock %} - Data
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/sql/sql.js"></script>
+<style>
+    .CodeMirror {
+      height: auto; /* Set the desired height */
+      border: 1px solid #ccc;
+      font-size: 14px;
+      width: 50%; /* Make it take the full width of the parent */
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="grid_div">
+<div class="container_item_1 con1andcon2">
+    <select id="mySelect" name="select_option">
+        <option>Select option</option>
+        {#One_data_analysis#}
+        <option value="max">Maximum</option>
+        <option value="min">Minimum</option>
+        <option value="sum">Sum</option>
+        <option value="count">Count</option>
+        <option value="mean">Mean</option>
+        <option value="median">Median</option>
+        <option value="nunique">Unique Count</option>
+        <option value="mode">Mode</option>
+        <option value="std">Standard Deviation</option>
+        <option value="prod">Product</option>
+        <option value="idxmax">Index of Max</option>
+        <option value="idxmin">Index of Min</option>
+        {#Table_data_analysis#}
+        <option value="operation">Operation</option>
+        <option value="describe">Describe</option>
+        <option value="drop">Drop Column</option>
+        <option value="dropna">Drop Missing Values</option>
+        <option value="head">Head</option>
+        <option value="tail">Tail</option>
+        <option value="sort">Sort</option>
+        <option value="rename">Rename</option>
+        <!--New-->
+        <option value="pivot">Pivot</option>
+        <option value="fillna">Fill Missing Values</option>
+        <option value="replace">Replace</option>
+        <option value="column_update">Column Update</option>
+        <option value="operations_on_columns">Operations on Columns</option>
+        <option value="duplicated">Duplicated</option>
+        <option value="drop_duplicates">Drop_duplicates</option>
+        <option value="cross_tabulation">Cross-Tabulation</option>
+        <option value="stacking_and_unstacking">Stacking and Unstacking</option>
+        <option value="cumulative_sum">Cumulative sum</option>
+        <option value="cumulative_product">Cumulative Product</option>
+        <option value="cumulative_maximum">Cumulative Maximum</option>
+        <option value="cumulative_minimum">Cumulative Minimum</option>
+        <option value="delete_row">delete row</option>
+        <option value="rename_column">Rename column</option>
+        <option value="column_copy">Column Copy</option>
+        <option value="group_by">Group By</option>
+        <!--end-->
+        <option value="sql_query">Query</option>
+        <option value="join">Join</option>
+    </select>
+
+{#One_data_analysis#}
+<div id="max" style="display:none;">
+<form action="/analysis" method="post">
+    <select name="selected_column_max" id="">
+    {%for column in columns%}
+    <option value="{{column}}">{{column}}</option>
+    {%endfor%}
+    </select>
+    <div class="formbtn">
+    <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+    </div>
+</form>
+</div>
+<div id="min" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_min" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="sum" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_sum" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="count" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_count" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="mean" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_mean" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="median" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_median" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+
+
+
+<div id="nunique" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_nunique" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="mode" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_mode" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="std" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_std" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="prod" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_prod" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="idxmax" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_idxmax" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="idxmin" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_idxmin" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+{#Table_data_analysis#}
+
+<div id="operation" style="display:none;">
+    <form action="/analysis" method="post" onsubmit="return validateInput()">
+        <label for="selected_column_name">Column Name:</label>
+        <input type="text" name="selected_column_name" id="selected_column_name">
+        <div id="error-message" class="error-message"></div>
+       <br>
+        <select name="selected_column(1)_operation" id="">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <select name="selected_operation" id="">
+            <option value="Division">Division</option>
+            <option value="Multiplication">Multiplication</option>
+            <option value="Addition">Addition</option>
+            <option value="Subtraction">Subtraction</option>
+        </select>
+        <select name="selected_column(2)_operation" id="">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <input type="submit" value="submit"  >
+    </form>
+</div>
+<div id="describe" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_describe" id="">
+            <option value="all">ALL columns</option>
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="drop" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_drop" id="">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="dropna" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_dropna" id="">
+            <option value="all">ALL columns</option>
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+
+<div id="head" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="numerical">Enter the number of rows you want to display: </label>
+        <input type="number" name="selected_column_head" id="numerical" value="5">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="tail" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="numerical">Enter the number of rows you want to display: </label>
+        <input type="number" name="selected_column_tail" id="numerical" value="5">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="sort" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_sort_type" id="">
+            <option value="ascending">Ascending order</option>
+            <option value="descending">Descending order </option>
+        </select>
+        <select name="selected_column_sort" id="">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="rename" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="current_column_name">current_column_name</label>
+        <input type="text" name="current_column_name" id="current_column_name">
+        <label for="new_column_name">new_column_name</label>
+       <input type="text" name="new_column_name" id="new_column_name">
+       <div class="formbtn"> 
+       <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+       </div>
+    </form>
+</div>
+
+<!--start-->
+<div id="pivot" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="pivot_index">Indexing:</label>
+        <select name="selected_column_pivot_index" id="pivot_index">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <br>
+        <label for="pivot_column">Columns:</label>
+        <select name="selected_column_pivot_column" id="pivot_column">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <br>
+        <label for="pivot_value">Values:</label>
+        <select name="selected_column_pivot_value" id="pivot_value">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="fillna" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_fillna" id="">
+            <option value="all">ALL columns</option>
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <input type="text" name="selected_column_fillna_text" id="">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="operations_on_columns" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_operations_on_columns" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <select name="selected_operation_on_column" id="">
+            <option value="Division">Division</option>
+            <option value="Multiplication">Multiplication</option>
+            <option value="Addition">Addition</option>
+            <option value="Subtraction">Subtraction</option>
+        </select>
+        <input type="number" name="selected_operation_on_column_number" id="">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+
+<div id="replace" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="selected_column_replace" id="">
+        {%for column in columns%}
+        <option value="{{column}}">{{column}}</option>
+        {%endfor%}
+        </select>
+        <br>
+        <label for="old_value">Old Value</label>
+        <input type="text" name="old_value_of_replace" id="old_value">
+        <br>
+        <label for="new_value">New Value</label>
+        <input type="text" name="new_value_of_replace" id="new_value">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="duplicated" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_duplicated">Select Column for Duplicate Checking:</label>
+        <select name="selected_column_duplicated" id="selected_column_duplicated">
+            <option value="all">ALL columns</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="occurrence">Select Occurrence:</label>
+        <select name="duplicate_occurrence" id="occurrence">
+            <option value="false">All</option>
+            <option value="first">First</option>
+            <option value="last">Last</option>
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="drop_duplicates" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_drop_duplicates">Select Column for Drop Duplicate</label>
+        <select name="selected_column_drop_duplicates" id="selected_column_drop_duplicates">
+            <option value="all">ALL columns</option>
+            {%for column in columns%}
+                <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <br>
+        <label for="occurrence"></label>
+        <select name="drop_duplicate_occurrence" id="occurrence">
+            <option value="false">All</option>
+            <option value="first">First</option>
+            <option value="last">Last</option>
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="cross_tabulation" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_cross_tabulation_row">Select Row:</label>
+        <select name="selected_column_cross_tabulation_row" id="selected_column_cross_tabulation_row">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="selected_column_cross_tabulation_column">Select Column:</label>
+        <select name="selected_column_cross_tabulation_column" id="selected_column_cross_tabulation_column">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="stacking_and_unstacking" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_stacking_and_unstacking">Choose Action:</label>
+        <select name="selected_column_stacking_and_unstacking" id="selected_column_stacking_and_unstacking">
+            <option value="stack">Stack</option>
+            <option value="unstack">Unstack</option>
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="cumulative_sum" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_cumulative_sum">Select Column for Cumulative Sum:</label>
+        <select name="selected_column_cumulative_sum" id="selected_column_cumulative_sum">
+            <option value="all">ALL columns</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="cumulative_product" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_cumulative_product">Select Column for Cumulative Product:</label>
+        <select name="selected_column_cumulative_product" id="selected_column_cumulative_product">
+            <option value="all">ALL columns</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="cumulative_maximum" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_cumulative_maximum">Select Column for Cumulative Product:</label>
+        <select name="selected_column_cumulative_maximum" id="selected_column_cumulative_maximum">
+            <option value="all">ALL columns</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="cumulative_minimum" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_cumulative_minimum">Select Column for Cumulative Product:</label>
+        <select name="selected_column_cumulative_minimum" id="selected_column_cumulative_minimum">
+            <option value="all">ALL columns</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="column_update" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="column_update_condition">Condition Column:</label>
+        <select name="selected_column_column_update_condition" id="column_update_condition">
+            <option value="index">Index</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="column_update_condition_text" id="">
+        <br>
+        <label for="column_update_set">Set Column:</label>
+        <select name="selected_column_column_update_set" id="column_update_set">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="column_update_set_text" id="">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="delete_row" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="delete_row_condition">Delete Row based on:</label>
+        <select name="selected_column_delete_row_condition" id="delete_row_condition">
+            <option value="index">Index</option>
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <label for="delete_row_condition_text">Condition Text:</label>
+        <input type="text" name="delete_row_condition_text" id="delete_row_condition_text">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="rename_column" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_rename_column">Select Column for Rename Column:</label>
+        <select name="selected_column_rename_column" id="selected_column_rename_column">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="selected_column_rename_column_new_name">New Name:</label>
+        <input type="text" name="selected_column_rename_column_new_name" id="selected_column_rename_column_new_name">
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="column_copy" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="selected_column_column_copy">Select Column to Copy:</label>
+        <select name="selected_column_column_copy" id="selected_column_column_copy">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="selected_column_column_copy_name">Column Name:</label>
+        <input type="text" name="selected_column_column_copy_name" id="selected_column_column_copy_name">
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+<div id="group_by" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="groupBy_Column">Group By</label>
+        <select name="selected_Column_GroupBy" id="groupBy_Column">
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="aggregation_Column">Aggregation Column</label>
+        <select name="selected_Column_Aggregation" id="aggregation_Column">
+            <option value="all">All Columns</option>
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="aggregation_Method">Aggregation Method</label>
+        <select name="aggregation_Method" id="aggregation_Method">
+            <option value="sum">Sum</option>
+            <option value="mean">Mean</option>
+            <option value="median">Median</option>
+            <option value="max">Max</option>
+            <option value="min">Min</option>
+            <option value="count">Count</option>
+            <option value="std">Standard Deviation</option>
+            <option value="var">Variance</option>
+            <option value="size">Size</option>
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="Submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+
+
+<!--edit-->
+<div id="sql_query" style="display:none;">
+    <form action="/analysis" method="post">
+        <label for="input_Field">The database table is named 'tbl'.</label>
+        <input type="text" id="input_Field" placeholder="Enter SQL query" name="SQL_query">
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+
+<div id="join_table" style="display:none;">
+    <form action="/analysis" method="post">
+        <select name="left_columns_join" id="">
+            {%for column in columns%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+            columns_analysis
+        </select>
+        <select name="join_type" id="">
+            <option value="inner">inner</option>
+            <option value="right">right</option>
+            <option value="left">left</option>
+            <option value="outer">outer</option>
+        </select>
+        <select name="right_columns_join" id="">
+            {%for column in columns_analysis%}
+            <option value="{{column}}">{{column}}</option>
+            {%endfor%}
+        </select>
+        <div class="formbtn">
+        <input type="submit" value="submit" class="custom-btn btn-2 analysisbtn">
+        </div>
+    </form>
+</div>
+{%if one_data_analysis_name%}
+<h4 id="value-div" style="display: block;" class="select_allow" >{{one_data_analysis_name}} : {{one_data_analysis_value}}</h4>
+{% endif %}
+    <form action="/analysis" method="post">
+    <!--<input type="submit" value="Replacing a Dataset" name="replace_dataset">-->
+    </form>
+    <!--<h2>Convert to Excel</h2>-->
+    <form id="convertForm" action="/analysis" method="POST">
+        <!-- Use a hidden input to store the HTML content -->
+        <input type="hidden" id="dataInput" name="Convert_to_Excel">
+        <!-- Use a button type instead of submit to prevent form submission -->
+        <input type="button" value="Save changes" onclick="convertToExcel1()" id="convertToExcel" class="custom-btn btn-2 analysisbtn">
+    </form>
+    <form id="replace_dataset" action="/analysis" method="POST">
+        <h2>Replace dataset</h2>
+        <!-- Use a hidden input to store the HTML content -->
+        <input type="hidden" id="data1Input" name="replace_dataset">
+        <!-- Use a button type instead of submit to prevent form submission -->
+        <input type="button" value="Replace dataset" onclick="replace_dataset_4()" class="custom-btn btn-2 analysisbtn">
+    </form>
+</div>
+<script>
+    function convertToExcel1() {
+        // Get the HTML content from the div
+        var htmlData = $("#tableData").html();
+
+        // Set the value of the hidden input with the HTML content
+        $("#dataInput").val(htmlData);
+
+        // Submit the form
+        $("#convertForm").submit();
+        removeShineEffect()
+    }
+    function replace_dataset_4() {
+        // Get the HTML content from the div
+        applyShineEffect()
+        var htmlData1 = $("#tableData1").html();
+        console.log("++++")
+        // Set the value of the hidden input with the HTML content
+        $("#data1Input").val(htmlData1);
+
+        // Submit the form
+        $("#replace_dataset").submit();
+    }
+    function applyShineEffect() {
+    // Apply class to the input element
+    var inputButton = document.getElementById('convertToExcel');
+    inputButton.classList.add('shine-animation');
+
+    // Store shine effect in local storage
+    localStorage.setItem('shineEffect', 'true');
+  }
+
+  function removeShineEffect() {
+    var inputButton = document.getElementById('convertToExcel');
+    inputButton.classList.remove('shine-animation');
+    localStorage.removeItem('shineEffect');
+  }
+
+  // Check if shine effect is stored in local storage
+  if (localStorage.getItem('shineEffect')) {
+    applyShineEffect();
+  }
+
+  // Function to toggle shine effect
+  function toggleShineEffect() {
+    if (localStorage.getItem('shineEffect')) {
+      removeShineEffect();
+    } else {
+      applyShineEffect();
+    }
+  }
+</script>
+<!--The upload-->
+<div class="container_item_2 con1andcon2" id="container_item_2_id" style="display: none;">
+    <div class="upload_file_here">
+        <form action="/analysis" method="post" enctype="multipart/form-data">
+            <div class="upload-btn-wrapper container_item0">
+                <button class="btn">Upload a file <div class="progress-bar">
+                    <div class="progress"></div></button>
+                <input type="file" name="file" id="fileInput" accept=".xls,.xlsx" />
+              </div>
+            <button type="submit" id="submitButton" style="display: none;">Upload</button>
+        </form>
+
+        <div>
+        <form action="/analysis" method="post">
+            <div class="select ">
+            <select name="sheet" class="select_tag">
+                <option value="">---Select Sheet---</option>
+                {% for sheet in sheet_names %}
+                    <option value="{{sheet}}">{{sheet}}</option>
+                {% endfor %}
+            </select>
+        </div>
+            <input type="hidden" name="excel_file_path" value="{{ excel_file_path }}">
+            <button type="submit" class="custom-btn btn-2 analysisbtn">Select</button>
+    
+        </form>
+        <!--The upload end -->
+            </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+ <!--end of grid container_item_2-->  
+
+</div>
+
+    <div class="container_item_3 div_size select_allow"  >
+  
+   <div id="tableData"> {{ data.to_html() | safe }}</div>
+  
+    </div>
+
+    {% if second_data %}
+    <div class="container_item_4 div_size select_allow" >
+       <div id="tableData1"> {{ data1.to_html() | safe }} </div>
+  
+</div>
+{% endif %}
+ <!--end of grid div-->   
+</div>
+<script src="{{ url_for('static', filename='js/analysis.js') }}"></script>
+
+{% endblock %}
