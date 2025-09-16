@@ -31,4 +31,5 @@ function getGreeting(time) {
   else {
     return "Sham-o-Khair";
   }
+  
 }
