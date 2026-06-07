@@ -1,4 +1,4 @@
-Privacy Policy for Moodle Dark Mode
+## Privacy Policy for Moodle Dark Mode
 Last updated: June 2026
 
 This Privacy Policy describes how the "Moodle Dark Mode" Chrome extension ("the Extension") handles your data. We are committed to protecting your privacy and ensuring transparency about how our Extension operates.
